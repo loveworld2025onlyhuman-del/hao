@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#020617">
+  <meta name="description" content="從靈感到作品：探索 AI 多媒體工作流的四個階段。一段由滾動驅動的互動向量旅程。">
+  <title>FORM / FLOW — AI 多媒體工作流</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  <style>
+    :root{color-scheme:dark;--bg:#020617;--ink:#eef5f4;--muted:#91a0b3;--line:rgba(168,190,215,.15);--mint:#b7ffce;--cyan:#51d8ee}
+    *{box-sizing:border-box}html{scroll-behavior:auto;scroll-padding-top:90px}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"Segoe UI","Microsoft JhengHei",sans-serif;-webkit-font-smoothing:antialiased}button,a{-webkit-tap-highlight-color:transparent}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,a:focus-visible,[role=button]:focus-visible{outline:2px solid var(--mint);outline-offset:7px}::selection{background:var(--mint);color:var(--bg)}
+    .mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}.eyebrow{font-size:10px;letter-spacing:.19em;text-transform:uppercase}.muted{color:var(--muted)}.wrap{width:min(1320px,88%);margin-inline:auto}.skip{position:fixed;top:8px;left:8px;z-index:100;background:var(--mint);color:#020617;padding:10px;transform:translateY(-150%)}.skip:focus{transform:none}
+    .site-nav{height:82px;position:absolute;inset:0 0 auto;z-index:10;border-bottom:1px solid var(--line)}.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between}.wordmark{font-size:17px;font-weight:750;letter-spacing:-.06em}.wordmark i{font-style:normal;color:var(--mint);padding:0 5px}.nav-right{display:flex;align-items:center;gap:35px}.nav-link{font-size:11px;color:#b4c0cf;transition:color .2s}.nav-link:hover{color:var(--mint)}.status{display:flex;gap:9px;align-items:center}.status-dot{width:5px;height:5px;background:var(--mint);border-radius:50%;box-shadow:0 0 12px #b7ffce80}
+    .hero{position:relative;min-height:850px;min-height:100svh;display:flex;align-items:center;padding:135px 0 100px;overflow:hidden;background:radial-gradient(ellipse at 78% 50%,#102b303f,transparent 49%)}.hero-grid{position:absolute;inset:0;background-image:linear-gradient(#536e8b0b 1px,transparent 1px),linear-gradient(90deg,#536e8b0b 1px,transparent 1px);background-size:76px 76px;mask-image:linear-gradient(90deg,transparent,#000)}.hero-copy{position:relative;z-index:2;width:64%}.hero-kicker{display:flex;align-items:center;gap:12px;color:var(--mint);margin:0 0 35px}.hero-kicker:before{content:"";width:25px;height:1px;background:var(--mint)}.hero h1{font-size:clamp(68px,8.8vw,132px);font-weight:500;line-height:.96;letter-spacing:-.075em;margin:0 0 32px}.hero h1 span{display:block}.hero h1 .outline{color:transparent;-webkit-text-stroke:1px #a9c0c0}.hero-subtitle{font-size:22px;font-weight:400;letter-spacing:.1em;margin:0 0 17px}.hero-desc{max-width:370px;line-height:1.95;font-size:13px;color:var(--muted);margin:0 0 32px}.explore{display:inline-flex;align-items:center;gap:28px;font-size:12px}.round-arrow{width:42px;height:42px;border:1px solid #b7ffce70;border-radius:50%;display:grid;place-items:center;color:var(--mint);transition:background .2s,transform .2s}.explore:hover .round-arrow{background:#b7ffce20;transform:translateY(4px)}
+    .hero-art{position:absolute;width:62%;height:83%;right:-10%;top:12%;pointer-events:none}.hero-art svg{width:100%;height:100%;overflow:visible}.art-caption{position:absolute;right:17%;bottom:19%;font-size:9px;color:#8ea9ae;letter-spacing:.15em}.hero-bottom{position:absolute;bottom:29px;left:6%;right:6%;display:flex;align-items:center;justify-content:space-between;color:#8191a7;font-size:9px;letter-spacing:.14em}.hero-bottom .coordinate{color:#60718b}.hero-bottom .scroll-mark{display:inline-block;height:25px;width:1px;background:linear-gradient(var(--mint),transparent);margin-right:15px;vertical-align:middle}.orbit-core{animation:breathe 7s ease-in-out infinite}@keyframes breathe{50%{opacity:.55}}
+    .journey{position:relative;border-top:1px solid var(--line);background:radial-gradient(ellipse at 50% 35%,#12333426,transparent 60%),var(--bg)}.stage{position:relative;min-height:850px;padding:50px 0 30px}.stage-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.stage-title{font-size:27px;letter-spacing:-.04em;font-weight:450;margin:9px 0 0}.stage-top .eyebrow{color:var(--mint)}.readout{text-align:right}.readout strong{font-size:27px;font-weight:400;letter-spacing:-.07em}.readout strong span{font-size:11px;color:var(--muted);letter-spacing:0;margin-left:5px}.readout p{font-size:8px;letter-spacing:.15em;margin:3px 0;color:var(--muted)}.top-progress{position:absolute;inset:0 0 auto;height:2px;background:#172435}.top-progress-fill{height:100%;width:100%;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,var(--cyan),var(--mint));box-shadow:0 0 14px #b7ffce70}
+    .rail-wrap{position:relative;width:100%;margin:20px auto 0}.rail{display:block;width:100%;height:auto;overflow:visible}.rail text{font-family:Consolas,monospace}.rail-node{cursor:pointer;outline:none}.rail-node .node-body{transform-box:fill-box;transform-origin:center;transition:transform .25s}.rail-node:hover .node-body,.rail-node:focus-visible .node-body{transform:scale(1.25)}.rail-node .node-ring{fill:#020617;stroke:#49606e;stroke-width:1.2;transition:stroke .3s,fill .3s}.rail-node .node-dot{fill:#5c7281;transition:fill .3s}.rail-node .node-label{fill:#798b9e;transition:fill .3s;font-size:10px;letter-spacing:1.5px}.rail-node.active .node-ring{stroke:var(--mint);fill:#12332f}.rail-node.active .node-dot,.rail-node.visited .node-dot{fill:var(--mint)}.rail-node.active .node-label{fill:var(--mint)}.rail-node:focus-visible .node-ring{stroke:white;stroke-width:3}.rail-node.visited .node-ring{stroke:#8ad3b4}.rail-guide{stroke:#18303c;stroke-width:1;stroke-dasharray:2 6}.rail-axis{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;color:#52667b;font-size:8px;letter-spacing:.17em;pointer-events:none}
+    .stage-content{border-top:1px solid var(--line);padding-top:26px;position:relative}.phase{display:grid;grid-template-columns:75px 1fr 36%;gap:26px;padding:28px 0;border-bottom:1px solid var(--line)}.phase-number{color:#3b5265;font-size:50px;line-height:1;font-weight:300;letter-spacing:-.09em}.phase-kicker{font-size:9px;letter-spacing:.15em;color:var(--mint);margin:0 0 12px}.phase h3{font-size:clamp(26px,3vw,40px);font-weight:450;letter-spacing:-.035em;margin:0 0 15px;line-height:1.25}.phase-desc{max-width:450px;font-size:12px;color:#a2afbf;line-height:1.9;margin:0}.tags{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}.tag{font-size:8px;letter-spacing:.1em;color:#8fa5b2;border:1px solid #233443;border-radius:3px;padding:5px 9px}.artifact{height:170px;border:1px solid #2a414949;background:linear-gradient(135deg,#14272d55,#05101b);border-radius:5px;position:relative;overflow:hidden}.artifact svg{width:100%;height:100%}.artifact-label{position:absolute;left:12px;top:11px;color:#91b1b3;font-size:7px;letter-spacing:.1em}.artifact-corner{position:absolute;right:10px;bottom:8px;font-size:7px;color:#607b8d}
+    .hud{display:flex;gap:6px;padding-top:27px;align-items:center}.hud-label{margin-right:auto;font-size:8px;color:#697f93;letter-spacing:.15em}.hud button{border:1px solid transparent;background:transparent;color:#7e91a6;border-radius:4px;padding:11px 17px;display:flex;gap:12px;align-items:center;transition:background .2s,color .2s,border-color .2s;font-size:11px}.hud button .mono{font-size:9px}.hud button:hover{color:#e1f1e7;background:#111e2b}.hud button.active{background:#b7ffce0a;border-color:#b7ffce40;color:var(--mint)}.stage-foot{display:flex;justify-content:space-between;margin-top:21px;color:#4f657c;font-size:8px;letter-spacing:.12em}.mode-notice{font-size:11px;color:#8ea3b8;line-height:1.8;margin-top:20px}
+    .enhanced .stage{height:100svh;min-height:680px;display:flex;flex-direction:column;justify-content:center;padding:37px 0 22px}.enhanced .rail-wrap{flex:0 1 auto;max-width:min(100%,1120px)}.enhanced .rail{max-height:32svh}.enhanced .stage-content{min-height:216px}.enhanced .phase{position:absolute;inset:26px 0 auto;visibility:hidden;opacity:0;padding:0;border:0}.enhanced .phase.is-visible{visibility:visible;opacity:1}.enhanced .phase:not(.is-visible){pointer-events:none}
+    .outro{position:relative;padding:120px 0 50px;border-top:1px solid var(--line);background:radial-gradient(ellipse at 50% 95%,#16303350,transparent 65%)}.outro-top{display:flex;justify-content:space-between;gap:60px;align-items:end}.outro .eyebrow{color:var(--mint);margin-bottom:25px}.outro h2{font-size:clamp(35px,4.8vw,66px);font-weight:400;letter-spacing:-.05em;line-height:1.25;margin:0}.outro h2 span{color:#6e9092}.outro-intro{max-width:310px;font-size:12px;line-height:1.9;color:var(--muted);margin-bottom:5px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);margin:65px 0 38px;border-block:1px solid var(--line)}.metric{padding:35px 30px 33px 0}.metric+.metric{border-left:1px solid var(--line);padding-left:35px}.metric-number{font-size:clamp(48px,6vw,80px);font-weight:350;line-height:1;letter-spacing:-.06em}.metric-number span{font-size:14px;color:var(--mint);margin-left:12px}.metric h3{font-size:13px;font-weight:400;margin:20px 0 9px}.metric p{font-size:10px;color:var(--muted);line-height:1.8;margin:0}.closing{display:flex;align-items:center;justify-content:space-between;gap:25px}.closing p{color:#7b90a3;font-size:10px}.replay{border:1px solid #557569;background:transparent;color:var(--mint);padding:13px 20px;border-radius:3px;font-size:11px;transition:background .2s}.replay:hover{background:#b7ffce12}footer{margin-top:85px;padding-top:23px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;color:#5d7389;font-size:8px;letter-spacing:.1em}footer .wordmark{font-size:14px;color:#bac9d0}
+    @media(min-width:1600px){.enhanced .rail{max-height:35svh}.enhanced .stage-content{min-height:245px}.artifact{height:195px}}
+    @media(max-width:800px){.wrap{width:88%}.nav-right{gap:20px}.nav-right .status{display:none}.hero{min-height:800px;min-height:100svh;padding:140px 0 120px}.hero-copy{width:100%}.hero h1{font-size:clamp(69px,13vw,100px)}.hero-art{width:90%;right:-40%;opacity:.55}.hero-subtitle{font-size:19px}.hero-desc{max-width:320px}.hero-bottom .coordinate{display:none}.stage-title{font-size:24px}.phase{grid-template-columns:45px 1fr;gap:18px}.phase-number{font-size:35px}.artifact{display:none}.enhanced .stage-content{min-height:205px}.enhanced .stage{min-height:600px}.rail-wrap{margin-top:45px;margin-bottom:22px}.enhanced .rail{max-height:none}.hud-label{display:none}.hud{justify-content:space-between;gap:4px}.hud button{padding:11px 12px;gap:7px;flex:1;justify-content:center}.outro{padding-top:85px}.outro-top{display:block}.outro-intro{margin-top:25px}.metric+.metric{padding-left:20px}.metric{padding-right:15px}}
+    @media(max-width:480px){.site-nav{height:70px}.hero h1{font-size:21vw}.hero-kicker{font-size:8px;margin-bottom:30px}.hero-desc{font-size:12px;max-width:280px}.hero-art{right:-45%;width:105%;opacity:.35}.art-caption{display:none}.nav-link{font-size:10px}.hero-bottom{font-size:8px}.hero-subtitle{font-size:18px}.stage-top .eyebrow{font-size:8px}.stage-title{font-size:21px}.readout strong{font-size:23px}.rail-wrap{width:108%;margin-left:-4%;margin-top:36px;margin-bottom:22px}.rail-node .node-label{font-size:20px;letter-spacing:1px}.rail-axis{font-size:6px;padding:0 4%}.phase{gap:13px;grid-template-columns:33px 1fr}.phase-number{font-size:29px}.phase h3{font-size:28px}.phase-desc{font-size:11px;line-height:1.85}.phase-kicker{font-size:8px}.tags{margin-top:15px}.tag{font-size:7px;padding:4px 7px}.hud button{font-size:10px;padding:10px 5px;gap:5px}.hud button .mono{font-size:8px}.stage-foot{font-size:6px}.enhanced .stage{min-height:580px;padding-top:28px}.enhanced .stage-content{min-height:211px}.outro h2{font-size:34px}.metrics{margin-top:40px}.metric-number{font-size:45px}.metric-number span{font-size:10px;margin-left:6px}.metric+.metric{padding-left:14px}.metric h3{font-size:11px}.metric p{font-size:9px}.closing{align-items:flex-start}.closing p{max-width:180px;line-height:1.8;margin:0}.replay{white-space:nowrap;padding:12px}footer{margin-top:55px;font-size:6px}}
+    @media(max-height:700px) and (min-width:801px){.enhanced .stage{min-height:620px;padding-top:24px}.enhanced .rail{max-height:28svh}.enhanced .stage-content{min-height:200px}.artifact{height:155px}.hud{padding-top:16px}.stage-foot{margin-top:14px}}
+    @media(max-width:800px){.rail-node>circle{r:44px}.rail-node .node-ring{r:18px}.rail-node .node-dot{r:5px}}
+    @media(max-width:480px){.rail-node>circle{r:70px}.rail-node .node-ring{r:22px}.rail-node .node-dot{r:6px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.hero{min-height:720px}}
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased">
+  <a href="#journey" class="skip">跳至四階段工作流</a>
+  <header class="site-nav">
+    <nav class="wrap nav-inner" aria-label="主要導覽">
+      <a href="#" class="wordmark" aria-label="FORM FLOW 首頁">FORM<i>/</i>FLOW<span style="color:#6d8790;font-size:9px;vertical-align:super;margin-left:3px">®</span></a>
+      <div class="nav-right"><a class="nav-link" href="#journey">探索工作流 ↗</a><a class="nav-link" href="#outcome">創作總覽</a><span class="status mono eyebrow"><span class="status-dot"></span>CREATIVE SYSTEMS / 01</span></div>
+    </nav>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="wrap"><div class="hero-copy">
+        <p class="hero-kicker mono eyebrow">THE AI MULTIMEDIA WORKFLOW</p>
+        <h1 id="hero-title"><span>FROM IDEA</span><span class="outline">TO IMPACT.</span></h1>
+        <h2 class="hero-subtitle">讓靈感，成為有感的作品。</h2>
+        <p class="hero-desc">以人的想像力為起點，讓 AI 串接文字、影像與聲音。沿著這條創作軌跡，看見一個想法如何成形。</p>
+        <a class="explore" href="#journey"><span>開始這段旅程</span><span class="round-arrow" aria-hidden="true">↓</span></a>
+      </div></div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 720 720" fill="none">
+          <defs><linearGradient id="heroGradient" x1="100" y1="560" x2="570" y2="120" gradientUnits="userSpaceOnUse"><stop stop-color="#44c6df" stop-opacity=".05"/><stop offset=".5" stop-color="#67dfe5"/><stop offset="1" stop-color="#c8ffd3"/></linearGradient><filter id="heroGlow"><feGaussianBlur stdDeviation="7"/></filter><radialGradient id="core"><stop stop-color="#b7ffce" stop-opacity=".14"/><stop offset="1" stop-color="#b7ffce" stop-opacity="0"/></radialGradient></defs>
+          <circle cx="360" cy="350" r="265" stroke="#8caea5" stroke-opacity=".12" stroke-dasharray="2 9"/>
+          <path d="M55 350H665M360 45V655" stroke="#8caea5" stroke-opacity=".1"/>
+          <g transform="rotate(-32 360 350)"><ellipse cx="360" cy="350" rx="265" ry="145" stroke="#5ca6a0" stroke-opacity=".2"/><ellipse cx="360" cy="350" rx="265" ry="95" stroke="#5ca6a0" stroke-opacity=".13"/></g>
+          <g transform="rotate(42 360 350)"><ellipse cx="360" cy="350" rx="200" ry="275" stroke="#5ca6a0" stroke-opacity=".12"/><ellipse cx="360" cy="350" rx="110" ry="275" stroke="#5ca6a0" stroke-opacity=".12"/></g>
+          <circle class="orbit-core" cx="360" cy="350" r="230" fill="url(#core)"/>
+          <path d="M85 535C165 594 553 460 565 248S193 173 240 343 626 410 622 145" stroke="url(#heroGradient)" stroke-width="14" opacity=".45" filter="url(#heroGlow)"/>
+          <path d="M85 535C165 594 553 460 565 248S193 173 240 343 626 410 622 145" stroke="url(#heroGradient)" stroke-width="1.5"/>
+          <g fill="#b7ffce"><circle cx="565" cy="248" r="4"/><circle cx="240" cy="343" r="3"/><circle cx="622" cy="145" r="4"/></g>
+          <g stroke="#b7ffce" opacity=".4"><circle cx="565" cy="248" r="12"/><circle cx="622" cy="145" r="12"/></g>
+          <g fill="#699292" font-family="monospace" font-size="9" letter-spacing="2"><text x="45" y="338">INPUT</text><text x="550" y="110">POSSIBILITY ∞</text><text x="375" y="637">HUMAN × MACHINE</text></g>
+        </svg><span class="art-caption mono">FIG. 001 — THE SHAPE OF AN IDEA</span>
+      </div>
+      <div class="hero-bottom mono"><span><i class="scroll-mark"></i>SCROLL TO EXPLORE</span><span class="coordinate">IDEATION → GENERATION → COMPOSITION → DELIVERY</span><span>04 PHASES / 01 FLOW</span></div>
+    </section>
+
+    <section id="journey" class="journey" aria-labelledby="journey-title">
+      <div class="stage">
+        <div class="top-progress" role="progressbar" aria-label="工作流進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="top-progress-fill"></div></div>
+        <div class="wrap">
+          <div class="stage-top"><div><p class="mono eyebrow" style="margin:0">01 / THE CREATIVE JOURNEY</p><h2 class="stage-title" id="journey-title">每一步，讓想像更靠近現實。</h2></div><div class="readout"><strong class="mono"><b id="progress-value" style="font-weight:400">00</b><span>%</span></strong><p class="mono">FLOW PROGRESS</p></div></div>
+          <div class="rail-wrap">
+            <svg class="rail" viewBox="0 0 1000 285" aria-label="四階段互動導軌">
+              <defs><linearGradient id="railGradient" x1="55" y1="0" x2="945" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#51d8ee"/><stop offset=".55" stop-color="#83ebd9"/><stop offset="1" stop-color="#c6ffd0"/></linearGradient><filter id="railGlow" x="-30%" y="-200%" width="160%" height="500%"><feGaussianBlur stdDeviation="5"/></filter></defs>
+              <g aria-hidden="true"><path d="M55 240H945" stroke="#223446" stroke-opacity=".5"/><path d="M55 40V245M350 40V245M650 40V245M945 40V245" class="rail-guide"/>
+                <!-- 底軌、發光軌、描邊軌共用完全相同的曲線。 -->
+                <path id="rail-base" d="M55 205 C180 205 180 65 350 90 S510 237 650 183 S795 30 945 65" fill="none" stroke="#243b49" stroke-width="1.6"/>
+                <path id="rail-glow" d="M55 205 C180 205 180 65 350 90 S510 237 650 183 S795 30 945 65" fill="none" stroke="url(#railGradient)" stroke-width="9" filter="url(#railGlow)" opacity=".55"/>
+                <path id="rail-draw" d="M55 205 C180 205 180 65 350 90 S510 237 650 183 S795 30 945 65" fill="none" stroke="url(#railGradient)" stroke-width="2.2"/>
+                <circle id="rail-cursor" r="4" fill="#e4ffeb" cx="55" cy="205"/>
+              </g>
+              <g class="rail-node active" data-phase="0" role="button" tabindex="0" aria-label="前往階段一：定義靈感" aria-current="step" transform="translate(55 205)"><circle r="28" fill="transparent"/><g class="node-body"><circle class="node-ring" r="14"/><circle class="node-dot" r="4"/></g><text class="node-label" text-anchor="middle" y="-30">01</text></g>
+              <g class="rail-node" data-phase="1" role="button" tabindex="0" aria-label="前往階段二：生成素材" transform="translate(350 90)"><circle r="28" fill="transparent"/><g class="node-body"><circle class="node-ring" r="14"/><circle class="node-dot" r="4"/></g><text class="node-label" text-anchor="middle" y="-30">02</text></g>
+              <g class="rail-node" data-phase="2" role="button" tabindex="0" aria-label="前往階段三：編排敘事" transform="translate(650 183)"><circle r="28" fill="transparent"/><g class="node-body"><circle class="node-ring" r="14"/><circle class="node-dot" r="4"/></g><text class="node-label" text-anchor="middle" y="-30">03</text></g>
+              <g class="rail-node" data-phase="3" role="button" tabindex="0" aria-label="前往階段四：交付體驗" transform="translate(945 65)"><circle r="28" fill="transparent"/><g class="node-body"><circle class="node-ring" r="14"/><circle class="node-dot" r="4"/></g><text class="node-label" text-anchor="middle" y="-30">04</text></g>
+            </svg><div class="rail-axis mono" aria-hidden="true"><span>THE SPARK</span><span>IMAGINATION IN MOTION</span><span>THE IMPACT</span></div>
+          </div>
+          <div class="stage-content">
+            <article class="phase is-visible" id="phase-1"><div class="phase-number mono">01</div><div><p class="phase-kicker mono">PHASE 01 / IDEATION</p><h3>先有想法，才有方向。</h3><p class="phase-desc">把模糊的靈感，轉化為清晰的創作命題。定義受眾、情緒與故事骨架，讓每一次生成都有目的。</p><div class="tags mono"><span class="tag">CREATIVE BRIEF</span><span class="tag">STORYBOARD</span><span class="tag">PROMPT DESIGN</span></div></div><div class="artifact" aria-hidden="true"><span class="artifact-label mono">01 — IDEA CONSTELLATION</span><svg viewBox="0 0 360 170" fill="none"><g stroke="#4e8c88" stroke-opacity=".4"><path d="M180 85L80 52M180 85L94 126M180 85L275 47M180 85L282 120M180 85L180 33"/><circle cx="180" cy="85" r="42" stroke-dasharray="2 5"/></g><g fill="#0b1e28" stroke="#69b8aa"><circle cx="80" cy="52" r="7"/><circle cx="94" cy="126" r="5"/><circle cx="275" cy="47" r="5"/><circle cx="282" cy="120" r="8"/><circle cx="180" cy="33" r="4"/></g><circle cx="180" cy="85" r="17" fill="#b7ffce" fill-opacity=".1" stroke="#b7ffce"/><path d="M173 85H187M180 78V92" stroke="#b7ffce"/></svg><span class="artifact-corner mono">INPUT: CURIOSITY</span></div></article>
+            <article class="phase" id="phase-2"><div class="phase-number mono">02</div><div><p class="phase-kicker mono">PHASE 02 / GENERATION</p><h3>讓可能性，開始顯影。</h3><p class="phase-desc">將創作方向延展為影像、旁白與聲音素材。以小步迭代探索風格，篩選符合故事的版本，保留人的判斷。</p><div class="tags mono"><span class="tag">VISUAL EXPLORATION</span><span class="tag">VOICE & SOUND</span><span class="tag">CURATION</span></div></div><div class="artifact" aria-hidden="true"><span class="artifact-label mono">02 — LATENT LANDSCAPES</span><svg viewBox="0 0 360 170" fill="none"><defs><linearGradient id="landscape" x2=".8" y2="1"><stop stop-color="#a9f7ce"/><stop offset="1" stop-color="#193a53"/></linearGradient></defs><rect x="91" y="39" width="155" height="95" rx="3" stroke="#304f59" transform="rotate(-9 170 85)"/><rect x="108" y="35" width="155" height="100" rx="3" fill="#0b202c" stroke="#57938c"/><circle cx="213" cy="61" r="13" fill="#b7ffce" fill-opacity=".6"/><path d="M109 114L146 72 183 113 218 88 262 121V134H109Z" fill="url(#landscape)" opacity=".8"/><path d="M109 119L161 100 191 117 228 107 262 126" stroke="#b7ffce" stroke-opacity=".5"/></svg><span class="artifact-corner mono">OUTPUT: POSSIBILITIES</span></div></article>
+            <article class="phase" id="phase-3"><div class="phase-number mono">03</div><div><p class="phase-kicker mono">PHASE 03 / COMPOSITION</p><h3>把素材，編成一個故事。</h3><p class="phase-desc">透過剪輯、聲畫同步與動態設計，建立敘事節奏。讓每一幀、每個停頓，都為同一份情緒服務。</p><div class="tags mono"><span class="tag">EDITING</span><span class="tag">MOTION DESIGN</span><span class="tag">SOUND SYNC</span></div></div><div class="artifact" aria-hidden="true"><span class="artifact-label mono">03 — NARRATIVE SEQUENCER</span><svg viewBox="0 0 360 170" fill="none"><path d="M47 45V139M47 139H316M47 66H316M47 100H316" stroke="#2e4b58"/><g fill="#4fa29f" fill-opacity=".2" stroke="#61b7ac" stroke-width=".6"><rect x="57" y="52" width="76" height="22" rx="2"/><rect x="140" y="52" width="61" height="22" rx="2"/><rect x="208" y="52" width="98" height="22" rx="2"/><rect x="76" y="85" width="112" height="18" rx="2"/><rect x="194" y="85" width="99" height="18" rx="2"/></g><path d="M58 121H74L78 115 82 127 87 112 92 128 97 117 102 124 107 114 111 126 116 118 122 121H145L150 114 154 127 159 110 164 129 169 116 175 124 179 118 184 121H205L210 112 214 129 219 116 225 125 230 118 236 121H306" stroke="#71c5c0"/><path d="M213 39V140" stroke="#c4ffd4"/><path d="M209 37H217L213 43Z" fill="#c4ffd4"/></svg><span class="artifact-corner mono">TIMELINE: 00:12:08</span></div></article>
+            <article class="phase" id="phase-4"><div class="phase-number mono">04</div><div><p class="phase-kicker mono">PHASE 04 / DELIVERY</p><h3>完成作品，開啟對話。</h3><p class="phase-desc">檢查細節、字幕與素材授權，為不同平台輸出合適版本。從觀眾的回饋汲取靈感，讓下一次創作繼續前進。</p><div class="tags mono"><span class="tag">QUALITY CHECK</span><span class="tag">MULTI-FORMAT</span><span class="tag">FEEDBACK LOOP</span></div></div><div class="artifact" aria-hidden="true"><span class="artifact-label mono">04 — READY FOR THE WORLD</span><svg viewBox="0 0 360 170" fill="none"><rect x="56" y="49" width="153" height="87" rx="4" fill="#0a202a" stroke="#568b89"/><rect x="225" y="37" width="62" height="100" rx="6" fill="#0b242c" stroke="#88c6ae"/><path d="M57 116L96 78 133 109 167 86 208 122M226 111L244 81 262 101 286 70" stroke="#b7ffce" stroke-opacity=".4"/><circle cx="133" cy="88" r="17" fill="#102e32" stroke="#b7ffce"/><path d="M126 88L131 93 140 82" stroke="#b7ffce" stroke-width="1.5"/><path d="M246 127H266" stroke="#709e98"/></svg><span class="artifact-corner mono">STATUS: READY TO RELEASE</span></div></article>
+          </div>
+          <nav class="hud" aria-label="工作流階段快捷切換"><span class="hud-label mono">JUMP TO PHASE ↗</span><button type="button" data-phase="0" class="active" aria-current="step" aria-controls="phase-1"><span class="mono">01</span>定義靈感</button><button type="button" data-phase="1" aria-controls="phase-2"><span class="mono">02</span>生成素材</button><button type="button" data-phase="2" aria-controls="phase-3"><span class="mono">03</span>編排敘事</button><button type="button" data-phase="3" aria-controls="phase-4"><span class="mono">04</span>交付體驗</button></nav>
+          <div class="stage-foot mono"><span>SCROLL TO CONNECT THE DOTS</span><span>HUMAN DIRECTION. MACHINE POSSIBILITY.</span></div>
+          <p class="mode-notice" id="mode-notice" hidden></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="outcome" class="outro" aria-labelledby="outcome-title"><div class="wrap">
+      <div class="outro-top"><div><p class="eyebrow mono">02 / THE BIGGER PICTURE</p><h2 id="outcome-title">工具拓展可能，<br><span>創意決定方向。</span></h2></div><p class="outro-intro">AI 讓製作方式不斷改變，好的故事依然從人出發。把流程串起來，為真正重要的想法留出更多空間。</p></div>
+      <div class="metrics"><div class="metric"><div class="metric-number mono">04<span>階段</span></div><h3>從概念到交付</h3><p>定義、生成、編排、交付<br>每一步都有明確的創作目的。</p></div><div class="metric"><div class="metric-number mono">03<span>媒介</span></div><h3>讓感官一起參與</h3><p>文字、影像、聲音<br>共同構成完整的敘事體驗。</p></div><div class="metric"><div class="metric-number mono">01<span>核心</span></div><h3>始終以人為本</h3><p>你的觀點與選擇<br>是作品最無法被取代的部分。</p></div></div>
+      <div class="closing"><p>以上數字為本頁工作流架構摘要，非效能統計。</p><button type="button" class="replay">重新走一遍 <span aria-hidden="true" style="margin-left:17px">↗</span></button></div>
+      <footer><a href="#" class="wordmark">FORM<i>/</i>FLOW</a><span class="mono">AN EXPLORATION OF HUMAN × AI CREATIVITY</span><span class="mono">END / BEGIN AGAIN</span></footer>
+    </div></section>
+  </main>
+  <script>
+  (() => {
+    'use strict';
+    // 單一進度來源，同步 SVG、百分比、節點、文案與 HUD。
+    const stops = [0, 1 / 3, 2 / 3, 1];
+    const base = document.querySelector('#rail-base');
+    const strokes = [...document.querySelectorAll('#rail-draw, #rail-glow')];
+    const nodes = [...document.querySelectorAll('.rail-node')];
+    const controls = [...document.querySelectorAll('[data-phase]')];
+    const phases = [...document.querySelectorAll('.phase')];
+    const cursor = document.querySelector('#rail-cursor');
+    const fill = document.querySelector('.top-progress-fill');
+    const value = document.querySelector('#progress-value');
+    const progressbar = document.querySelector('[role="progressbar"]');
+    const notice = document.querySelector('#mode-notice');
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let length = base.getTotalLength(), current = -1, trigger, animation, scrollTween;
+    let enabled = false, fallbackObserver;
+    function measure() {
+      length = base.getTotalLength();
+      strokes.forEach(path => { path.style.strokeDasharray = `${length} ${length}`; });
+      nodes.forEach((node, index) => {
+        const pt = base.getPointAtLength(length * stops[index]);
+        node.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
+      });
+    }
+    function render(progress) {
+      const p = Math.max(0, Math.min(1, progress));
+      strokes.forEach(path => { path.style.strokeDashoffset = length * (1 - p); });
+      const pt = base.getPointAtLength(length * p);
+      cursor.setAttribute('cx', pt.x); cursor.setAttribute('cy', pt.y);
+      fill.style.transform = `scaleX(${p})`;
+      const percent = Math.round(p * 100);
+      value.textContent = String(percent).padStart(2, '0');
+      progressbar.setAttribute('aria-valuenow', percent);
+      // 在節點間的中點切換：第一、最後一階段也有足夠的閱讀時間。
+      const index = Math.round(p * (stops.length - 1));
+      nodes.forEach((node, i) => node.classList.toggle('visited', p >= stops[i]));
+      if (index === current) return;
+      current = index;
+      controls.forEach(control => {
+        const active = Number(control.dataset.phase) === index;
+        control.classList.toggle('active', active);
+        if (active) control.setAttribute('aria-current', 'step');
+        else control.removeAttribute('aria-current');
+      });
+      phases.forEach((phase, i) => {
+        phase.classList.toggle('is-visible', i === index);
+        if (enabled) phase.setAttribute('aria-hidden', i !== index ? 'true' : 'false');
+        else phase.removeAttribute('aria-hidden');
+      });
+    }
+    function jump(index) {
+      if (enabled && trigger) {
+        // 每次讀取 refresh 後的新起訖值，不快取捲動座標。
+        const y = trigger.start + stops[index] * (trigger.end - trigger.start);
+        scrollTween?.kill();
+        scrollTween = gsap.to(window, {duration:1.25, scrollTo:{y, autoKill:true}, ease:'power2.inOut', overwrite:'auto'});
+      } else {
+        phases[index].scrollIntoView({behavior:'auto', block:'center'});
+        render(stops[index]);
+      }
+    }
+    controls.forEach(control => {
+      control.addEventListener('click', () => jump(Number(control.dataset.phase)));
+      if (control.tagName.toLowerCase() === 'g') control.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); jump(Number(control.dataset.phase)); }
+      });
+    });
+    document.querySelector('.replay').addEventListener('click', () => jump(0));
+    document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', event => {
+      const href = link.getAttribute('href');
+      const target = href === '#' ? document.body : document.querySelector(href);
+      if (!target) return;
+      event.preventDefault();
+      if (enabled) {
+        scrollTween?.kill();
+        scrollTween = gsap.to(window, {duration:1.15, scrollTo:{y:href === '#' ? 0 : target, autoKill:true}, ease:'power2.inOut', overwrite:'auto'});
+      } else target.scrollIntoView({behavior:'auto'});
+    }));
+    // 使用者接手捲動時，立即停止程式跳轉。
+    const cancelJump = () => { scrollTween?.kill(); };
+    window.addEventListener('wheel', cancelJump, {passive:true});
+    window.addEventListener('touchstart', cancelJump, {passive:true});
+    window.addEventListener('keydown', event => {
+      if (event.defaultPrevented) return;
+      if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key)) cancelJump();
+    });
+    function setup() {
+      scrollTween?.kill();
+      if (trigger) { trigger.kill(); trigger = null; }
+      if (animation) { animation.kill(); animation = null; }
+      fallbackObserver?.disconnect();
+      enabled = Boolean(window.gsap && window.ScrollTrigger && window.ScrollToPlugin && !motion.matches);
+      document.body.classList.toggle('enhanced', enabled);
+      current = -1;
+      measure();
+      if (enabled) {
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+        notice.hidden = true;
+        const state = {progress:0};
+        render(0);
+        animation = gsap.to(state, {
+          progress:1, ease:'none', onUpdate:() => render(state.progress),
+          scrollTrigger:{
+            trigger:'.stage', start:'top top',
+            end:() => `+=${Math.max(1800, window.innerHeight * (window.innerWidth < 800 ? 3.4 : 4))}`,
+            pin:true, pinSpacing:true, scrub:1.0, anticipatePin:1, invalidateOnRefresh:true,
+            onRefresh:() => { measure(); render(state.progress); }
+          }
+        });
+        trigger = animation.scrollTrigger;
+        ScrollTrigger.refresh();
+      } else {
+        render(0);
+        notice.hidden = false;
+        notice.textContent = motion.matches ? '已依系統「減少動態效果」偏好，切換為完整閱讀模式。' : '目前為完整閱讀模式；連上網路並重新整理，即可載入滾動動效。';
+        if ('IntersectionObserver' in window) {
+          const ratios = new Map(phases.map(phase => [phase, 0]));
+          fallbackObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => ratios.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0));
+            const visible = [...ratios].filter(([, ratio]) => ratio > 0).sort((a,b) => b[1] - a[1]);
+            if (visible.length) render(stops[phases.indexOf(visible[0][0])]);
+          }, {rootMargin:'-15% 0px -25% 0px', threshold:[0,.25,.5,.75,1]});
+          phases.forEach(phase => fallbackObserver.observe(phase));
+        }
+      }
+    }
+    // defer CDN scripts have settled by DOMContentLoaded; CDN failure preserves all copy.
+    document.addEventListener('DOMContentLoaded', setup, {once:true});
+    motion.addEventListener('change', setup);
+    window.addEventListener('load', () => { if (enabled) ScrollTrigger.refresh(); }, {once:true});
+  })();
+  </script>
+</body>
+</html>
